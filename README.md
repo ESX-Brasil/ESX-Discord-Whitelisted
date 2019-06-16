@@ -30,5 +30,6 @@ bot.on("message", async message => {
 bot.login("adiciona o toke do discord aqui!");
 ```
 
-Tem que isntalar o node.js na maquina e o code vb tbm.
+Tem que isntalar o [node.js](https://nodejs.org/en/) na maquina e o [code.visualstudio](https://code.visualstudio.com/) tbm.
+
 fuiii!!!
