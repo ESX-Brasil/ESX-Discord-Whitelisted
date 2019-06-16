@@ -14,7 +14,7 @@ bot.commands = new Discord.Collection();
 
 // Displays the message in console
 bot.on("ready", async () => {
-    console.log('\x1b[32m%s\x1b[0m', `${bot.user.username} is online and ready to do something! I'm live on ${bot.guilds.size} servers.`);
+    console.log('\x1b[32m%s\x1b[0m', `${bot.user.username} está online e pronto para fazer alguma coisa! Estou ao vivo no discord ${bot.guilds.size} servers.`);
     bot.user.setActivity("Online Now", {type: "PLAYING"});
 
     bot.user.setStatus('Online') // Online, idle, invisible & dnd
@@ -22,12 +22,12 @@ bot.on("ready", async () => {
 
 // Bot Start
 bot.on("message", async message => {
-    if(cmd === `.hello`){
-        return message.channel.send("Hello Mate!");
+    if(cmd === `.oi`){
+        return message.channel.send("Ola estou aqui!");
     }
 });
 
-bot.login("");
+bot.login("adiciona o toke do discord aqui!");
 ```
 
 Tem que isntalar o node.js na maquina e o code vb tbm.
