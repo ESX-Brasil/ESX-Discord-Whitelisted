@@ -2,7 +2,7 @@
 notWhitelisted = "Você não está na lista de permissões deste servidor. Entre em nosso discord: COMMUNITY_LINK" -- Mensagem exibida quando não estão na lista de permissões com a função
 noDiscord = "Você deve deixar o Discord aberto para entrar neste servidor." -- Mensagem exibida quando a discord não é encontrada
 
-roles = { -- Role nickname(s) needed to pass the whitelist
+roles = { -- Nomes de função necessários para passar a lista de permissões
     "Admin",
     "Whitelisted",
     "Cidadao",
