@@ -9,7 +9,7 @@ function DiscordRequest(method, endpoint, jsondata)
     while data == nil do
         Citizen.Wait(0)
     end
-
+	
     return data
 end
 
@@ -32,11 +32,11 @@ function GetRoles(user)
 			local found = true
 			return roles
 		else
-			print("Ocorreu um erro, talvez eles não estejam no discord? Error: "..member.data)
+			print("Ocorreu um erro, talvez eles não estejam na discórdia? Erro: "..member.data)
 			return false
 		end
 	else
-		print("identificador ausente")
+		print("missing identifier")
 		return false
 	end
 end
@@ -46,7 +46,7 @@ function IsRolePresent(user, role)
 	for _, id in ipairs(GetPlayerIdentifiers(user)) do
 		if string.match(id, "discord:") then
 			discordId = string.gsub(id, "discord:", "")
-			print("Found discord id: "..discordId)
+			print("Encontrado discord id: "..discordId)
 			break
 		end
 	end
@@ -55,7 +55,7 @@ function IsRolePresent(user, role)
 	if type(role) == "number" then
 		theRole = tostring(role)
 	else
-		theRole = Config.Roles[role]
+		theRole = Config.Roles[role].id
 	end
 
 	if discordId then
@@ -67,14 +67,14 @@ function IsRolePresent(user, role)
 			local found = true
 			for i=1, #roles do
 				if roles[i] == theRole then
-					print("Found role")
+					print("Cargo encontrado")
 					return true
 				end
 			end
-			print("Not found!")
+			print("Não encontrado!")
 			return false
 		else
-			print("An error occured, maybe they arent in the discord? Error: "..member.data)
+			print("Ocorreu um erro, talvez eles não estejam na discórdia? Erro: "..member.data)
 			return false
 		end
 	else
@@ -83,12 +83,38 @@ function IsRolePresent(user, role)
 	end
 end
 
+RegisterNetEvent('discord_perms:FetchRoles')
+AddEventHandler('discord_perms:FetchRoles', function()
+	local target = source
+	local license = GetIdentifier(target, 'license')
+	for k, v in pairs(Config.Roles) do
+		RoleToPrincipal(target, k, license)
+	end
+end)
+
+function RoleToPrincipal(user, role, license)
+	if IsRolePresent(user, role) then
+		local group = Config.Roles[role].group
+		ExecuteCommand('remove_principal identifier.' .. license .. " group." .. group ) --remover o principal evita possíveis duplicatas
+		ExecuteCommand('add_principal identifier.' .. license .. " group." .. group )
+		print('Adicionado principal para ' .. group)
+    end
+end
+
+function GetIdentifier(serverId, search)
+	for i,identifier in ipairs(GetPlayerIdentifiers(serverId)) do
+		if string.find(identifier, search) then
+			return identifier
+		end
+	end
+end
+
 Citizen.CreateThread(function()
 	local guild = DiscordRequest("GET", "guilds/"..Config.GuildId, {})
 	if guild.code == 200 then
 		local data = json.decode(guild.data)
-		print("Permission system guild set to: "..data.name.." ("..data.id..")")
+		print("Guilda do sistema de permissão definida para: "..data.name.." ("..data.id..")")
 	else
-		print("An error occured, please check your config and ensure everything is correct. Error: "..(guild.data or guild.code))
+		print("Ocorreu um erro, verifique sua configuração e verifique se tudo está correto. Erro: "..(guild.data or guild.code)) 
 	end
 end)
